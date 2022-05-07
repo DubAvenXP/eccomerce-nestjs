@@ -11,12 +11,15 @@ import config from './config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: environments[process.env.NODE_ENV] || environments.dev,
+      envFilePath:
+        environments[process.env.NODE_ENV] || environments.development,
       isGlobal: true,
       load: [config],
       validationSchema: Joi.object({
         PORT: Joi.number().required(),
-        NODE_ENV: Joi.string().valid('dev', 'prod', 'stag').required(),
+        NODE_ENV: Joi.string()
+          .valid('development', 'production', 'staging')
+          .required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
         POSTGRES_DB_USER: Joi.string().required(),
