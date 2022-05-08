@@ -2,27 +2,22 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
-import { Customer } from './customer.entity';
-
+import { Product } from './product.entity';
 @Entity()
-export class User {
+export class Brand {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 100, unique: true })
-  email: string;
+  @Column({ type: 'varchar', length: 255, unique: true })
+  name: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  password: string; // encript
-
-  @Column({ type: 'varchar', length: 100 })
-  role: string;
+  @Column({ type: 'text' })
+  logo: string;
 
   @Column({ type: 'boolean', default: true })
   status: boolean;
@@ -33,7 +28,6 @@ export class User {
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
-  @JoinColumn()
-  customer: Customer;
+  @OneToMany(() => Product, (product) => product.brand)
+  products: Product[];
 }

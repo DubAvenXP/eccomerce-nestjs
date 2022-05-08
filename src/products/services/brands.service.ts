@@ -1,24 +1,17 @@
-import { /* Inject, */ Injectable, NotFoundException } from '@nestjs/common';
-// import { ConfigType } from '@nestjs/config';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dto';
-import { Category } from '../entities/category.entity';
-// import config from '../../config';
+import { Brand } from '../entities/brand.entity';
+import { CreateBrandDto, UpdateBrandDto } from '../dtos/brands.dto';
 
 @Injectable()
-export class CategoriesService {
-  private name = 'Category';
-  constructor(
-    // @Inject(config.KEY) private configService: ConfigType<typeof config>,
-    @InjectRepository(Category) private repository: Repository<Category>,
-  ) {}
+export class BrandsService {
+  private name = 'Brand';
 
-  async findAll(filter?: {
-    limit: number;
-    offset: number;
-  }): Promise<Category[]> {
+  constructor(@InjectRepository(Brand) private repository: Repository<Brand>) {}
+
+  async findAll(filter?: { limit: number; offset: number }): Promise<Brand[]> {
     return await this.repository.find({
       where: { status: true },
       take: filter?.limit,
@@ -26,20 +19,26 @@ export class CategoriesService {
     });
   }
 
-  async findOne(id: number): Promise<Category> {
-    const item = await this.repository.findOne(id);
+  async findOne(id: number): Promise<Brand> {
+    const item = await this.repository.findOne(id, {
+      where: { status: true },
+      relations: ['products'],
+    });
+
     if (!item) {
       throw new NotFoundException(`${this.name} #${id} not found`);
     }
+
     return item;
   }
 
-  async create(payload: CreateCategoryDto) {
+  async create(payload: CreateBrandDto) {
     const newItem = this.repository.create(payload);
+
     return await this.repository.save(newItem);
   }
 
-  async update(id: number, payload: UpdateCategoryDto) {
+  async update(id: number, payload: UpdateBrandDto) {
     const item = await this.findOne(id);
     this.repository.merge(item, payload);
     return this.repository.save(item);

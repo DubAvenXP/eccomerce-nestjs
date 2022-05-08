@@ -10,13 +10,13 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { CategoriesService } from '../services/categories.service';
-import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dto';
+import { BrandsService } from '../services/brands.service';
+import { CreateBrandDto, UpdateBrandDto } from '../dtos/brands.dto';
 
-@ApiTags('categories')
-@Controller('categories')
-export class CategoriesController {
-  constructor(private service: CategoriesService) {}
+@ApiTags('brands')
+@Controller('brands')
+export class BrandsController {
+  constructor(private service: BrandsService) {}
 
   @Get()
   async findAll() {
@@ -29,14 +29,14 @@ export class CategoriesController {
   }
 
   @Post()
-  async create(@Body() payload: CreateCategoryDto) {
+  async create(@Body() payload: CreateBrandDto) {
     return await this.service.create(payload);
   }
 
   @Put('/:id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateCategoryDto,
+    @Body() payload: UpdateBrandDto,
   ) {
     return await this.service.update(id, payload);
   }
