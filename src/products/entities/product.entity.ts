@@ -5,12 +5,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   ManyToOne,
-  // ManyToMany,
+  ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 import { Brand } from './brand.entity';
-// import { Category } from './category.entity';
+import { Category } from './category.entity';
+import { OrderItem } from '../../users/entities/order-item.entity';
 
 @Entity()
 export class Product {
@@ -45,7 +47,7 @@ export class Product {
   @ManyToOne(() => Brand, (brand) => brand.products)
   brand: Brand;
 
-  // @ManyToMany(() => Category, (category) => category.products)
-  // @JoinTable() // Solo en un lado de la relacion (tabla intermedia)
-  // categories: Category[];
+  @ManyToMany(() => Category, (category) => category.products)
+  @JoinTable() // Solo en un lado de la relacion (tabla intermedia)
+  categories: Category[];
 }

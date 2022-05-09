@@ -27,7 +27,7 @@ export class CategoriesService {
   }
 
   async findOne(id: number): Promise<Category> {
-    const item = await this.repository.findOne(id);
+    const item = await this.repository.findOne(id, { relations: ['products'] });
     if (!item) {
       throw new NotFoundException(`${this.name} #${id} not found`);
     }
