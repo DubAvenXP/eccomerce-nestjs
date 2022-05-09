@@ -10,6 +10,8 @@ import {
   Query,
   HttpStatus,
   HttpCode,
+  UseGuards,
+  SetMetadata,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -20,12 +22,18 @@ import {
 } from '../dtos/products.dto';
 import { CustomParseIntPipe } from '../../common/custom-parse-int.pipe';
 import { ProductsService } from '../services/products.service';
+import { ApiKeyGuard } from '../../auth/guards/api-key.guard';
+import { Public } from '../../auth/decorators/public.decorator';
 
+@UseGuards(ApiKeyGuard) // Proteger un endpoit
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private service: ProductsService) {}
 
+  // @UseGuards(ApiKeyGuard) // Proteger un endpoit
+  // @SetMetadata('isPublic', true)
+  @Public()
   @Get()
   get(@Query() params: FilterProductsDto) {
     return this.service.findAll(params);

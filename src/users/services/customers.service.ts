@@ -20,7 +20,6 @@ export class CustomersService {
     return await this.repository.find({
       where: { status: true },
       relations: ['customer'],
-      select: ['id', 'name', 'lastName', 'phone', 'user'],
       take: filter?.limit,
       skip: filter?.offset,
     });

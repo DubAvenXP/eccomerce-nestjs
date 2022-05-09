@@ -4,6 +4,7 @@ export default registerAs('config', () => {
   return {
     port: process.env.PORT,
     env: process.env.NODE_ENV,
+    apiKey: process.env.API_KEY,
     database: {
       user: process.env.POSTGRES_DB_USER,
       host: process.env.POSTGRES_DB_HOST,

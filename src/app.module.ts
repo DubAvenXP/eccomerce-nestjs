@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 import { environments } from './environments';
+import { AuthModule } from './auth/auth.module';
 import config from './config';
 
 @Module({
@@ -20,6 +21,7 @@ import config from './config';
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'staging')
           .required(),
+        API_KEY: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
         POSTGRES_DB_USER: Joi.string().required(),
@@ -36,6 +38,7 @@ import config from './config';
     UsersModule,
     ProductsModule,
     DatabaseModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
