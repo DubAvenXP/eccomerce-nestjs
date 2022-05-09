@@ -7,10 +7,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { Customer } from './customer.entity';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,16 +25,27 @@ export class User {
   @Column({ type: 'varchar', length: 100 })
   role: string;
 
+  @Exclude()
   @Column({ type: 'boolean', default: true })
   status: boolean;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  @Exclude()
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  @Exclude()
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateAt: Date;
 
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 }

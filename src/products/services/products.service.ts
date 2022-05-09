@@ -1,8 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between, FindConditions } from 'typeorm';
 
-import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  FilterProductsDto,
+} from '../dtos/products.dto';
 import { Product } from '../entities/product.entity';
 import { Category } from '../entities/category.entity';
 import { Brand } from '../entities/brand.entity';
@@ -15,15 +19,17 @@ export class ProductsService {
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async findAll(filter?: {
-    limit: number;
-    offset: number;
-    brand: string;
-  }): Promise<Product[]> {
+  async findAll(params?: FilterProductsDto): Promise<Product[]> {
+    const where: FindConditions<Product> = {};
+    where.status = true;
+    if (params.minPrice && params.maxPrice) {
+      where.price = Between(params.minPrice, params.maxPrice);
+    }
+
     return await this.productRepo.find({
-      where: { status: true },
-      take: filter?.limit,
-      skip: filter?.offset,
+      where,
+      take: params?.limit ?? 10,
+      skip: params?.offset ?? 0,
       relations: ['brand'],
     });
   }

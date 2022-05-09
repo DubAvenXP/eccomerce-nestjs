@@ -6,8 +6,12 @@ import {
   IsPositive,
   IsArray,
   ArrayMinSize,
+  IsOptional,
+  Min,
+  IsBoolean,
+  ValidateIf,
 } from 'class-validator';
-import { PartialType } from '@nestjs/swagger';
+import { PartialType, PickType } from '@nestjs/swagger';
 
 export class CreateProductDto {
   @IsString()
@@ -44,3 +48,25 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
+
+export class FilterProductsDto {
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  limit: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  offset: number;
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  minPrice: number;
+
+  @ValidateIf((item) => item.minPrice)
+  @IsNumber()
+  @IsPositive()
+  maxPrice: number;
+}

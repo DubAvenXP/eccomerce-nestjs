@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,7 @@ import {
 } from 'typeorm';
 import { Product } from './product.entity';
 
-@Entity()
+@Entity({ name: 'categories' })
 export class Category {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,14 +17,25 @@ export class Category {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
+  @Exclude()
   @Column({ type: 'boolean', default: true })
   status: boolean;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  @Exclude()
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  @Exclude()
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateAt: Date;
 
   @ManyToMany(() => Product, (product) => product.categories)
   products: Product[];
