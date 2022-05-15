@@ -5,13 +5,7 @@ export default registerAs('config', () => {
     port: process.env.PORT,
     env: process.env.NODE_ENV,
     apiKey: process.env.API_KEY,
-    database: {
-      user: process.env.POSTGRES_DB_USER,
-      host: process.env.POSTGRES_DB_HOST,
-      pass: process.env.POSTGRES_DB_PASS,
-      name: process.env.POSTGRES_DB_NAME,
-      port: process.env.POSTGRES_DB_PORT,
-    },
+    databaseUrl: process.env.DATABASE_URL,
     email: {
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,

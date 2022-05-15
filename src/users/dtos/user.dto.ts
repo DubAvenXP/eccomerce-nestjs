@@ -5,6 +5,7 @@ import {
   Length,
   IsOptional,
   IsPositive,
+  IsIn,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 
@@ -19,6 +20,7 @@ export class CreateUserDto {
   readonly password: string;
 
   @IsNotEmpty()
+  @IsIn(['customer', 'admin'])
   readonly role: string;
 
   @IsOptional()

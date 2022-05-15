@@ -20,16 +20,13 @@ import config from '../config';
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, name, pass, port } = configService.database;
         return Object.assign({
-          type: 'postgres',
-          host,
-          port,
-          username: user,
-          password: pass,
-          database: name,
-          synchronize: false,
+          entities: ['dist/**/*.entity{.ts,.js}'],
           autoLoadEntities: true,
+          ssl: configService.env === 'production',
+          synchronize: false,
+          type: 'postgres',
+          url: configService.databaseUrl,
         });
       },
     }),

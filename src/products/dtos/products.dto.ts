@@ -8,10 +8,9 @@ import {
   ArrayMinSize,
   IsOptional,
   Min,
-  IsBoolean,
   ValidateIf,
 } from 'class-validator';
-import { PartialType, PickType } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
 
 export class CreateProductDto {
   @IsString()
